@@ -2,7 +2,7 @@ var collections = (function() {
 
 	var module = {};
 
-	function Node(prev, val) {
+	function SinglyLinkedNode(prev, val) {
 		this._val = val;
 		this._prev = prev;
 	}
@@ -19,7 +19,7 @@ var collections = (function() {
 	}
 
 	Queue.prototype.push = function(new_elem) {
-		var new_node = new Node(null, new_elem);
+		var new_node = new SinglyLinkedNode(null, new_elem);
 		if(this.isEmpty()) {
 			this._last = this._first = new_node;
 		} else {
@@ -43,7 +43,7 @@ var collections = (function() {
 
 	Queue.prototype.pop = function() {
 		if(this._first === null)
-			return;
+			return null;
 
 		var ret = this._first._val;
 		this._first = this._first._prev;
@@ -71,7 +71,56 @@ var collections = (function() {
 		return ret;
 	}
 
+
+
+	function Stack() {
+		this._top = null;
+		this._length = 0;
+	}
+
+	Stack.prototype.push = function (elem) {
+		this._top = new SinglyLinkedNode(this._top, elem);
+		this._length++;
+	}
+
+	Stack.prototype.pop = function () {
+		if(this._top === null)
+			return null;
+
+		var ret = this._top._val;
+		this._top = this._top._prev;
+		this._length--;
+		return ret;
+	}
+
+	Stack.prototype.top = function () {
+		if(this._top === null)
+			return null;
+		return this._top._val;
+	}
+
+	Stack.prototype.isEmpty = function () {
+		return (this._top === null);
+	}
+
+	Stack.prototype.length = function () {
+		return this._length;
+	}
+
+	Stack.prototype.toArray = function() {
+		var ret = new Array(this._length);
+		var curr = this._top;
+		var count = 0;
+		while(curr !== null) {
+			ret[count] = curr._val;
+			count++;
+			curr = curr._prev;
+		}
+		return ret;
+	}
+
 	module.Queue = Queue;
+	module.Stack = Stack;
 
 	return module;
 })();
